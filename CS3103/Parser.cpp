@@ -17,20 +17,25 @@ namespace cs3103 {
 		ifstream infile(fileName);
 		string line;
 		while (getline(infile, line)) {
-			if (line.find("{") != string::npos) {
-				continue;
-			}
 			istringstream iss(line);
 			string word;
-			iss >> word; //this suppose to be "ASPATH:"
 			vector<int> path;
+			bool isPathValid = true;
+
+			iss >> word; //this suppose to be "ASPATH:"
+
 			while (iss >> word) {
 				int node = atoi(word.c_str());
-				if (path.size() == 0 || find (path.begin(), path.end(), node) == path.end()) {
+				if (node == 0) {
+					isPathValid = false;
+					break;
+				}
+				if (path.size() == 0 || path.back() != node) {
 					path.push_back(node);
 				}
 			}
-			if (!model.isPathExist(path)) {
+
+			if (isPathValid && !model.isPathExist(path)) {
 				model.insertPath(path);
 			}
 		}
