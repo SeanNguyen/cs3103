@@ -16,7 +16,13 @@ int _tmain(int argc, _TCHAR* argv[]) {
 	Model model;
 	Serializer serializer;
 
-	cout << "PROGRAM BEGIN !!!" << endl << "Solving Task 1" << endl;
+	cout << "PROGRAM BEGIN !!!" << endl;
+	int L, R;
+	cout << "Input L: ";
+	cin >> L;
+	cout << "Input R: ";
+	cin >> R;
+	cout << "Solving Task 1 (Parsing source file in this task can be really long)" << endl;
 	solveTask1(model);
 	cout << "Saving Task 1 result" << endl;
 	serializer.SerializeTask1(model);
@@ -26,11 +32,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
 	cout << "Saving Task 2 result" << endl;
 	serializer.SerializeTask2(model, task2Result);
 	
-	int L, R;
-	cout << "Solving Task 3" << endl << "Input L: ";
-	cin >> L;
-	cout << "Input R: ";
-	cin >> R;
+	cout << "Solving Task 3" << endl;
 	solveTask3(model, L, R);
 	cout << "Saving Task 3 result" << endl;
 	serializer.SerializeTask3(model);
@@ -233,8 +235,8 @@ void solveTask4(Model& model) {
 		for (std::map<int, EdgeInfo>::iterator it = edges.begin(); it != edges.end(); ++it)	{
 			EdgeType edgeType = it->second.edgeType;
 			int neighbour = it->first;
-			if (edgeType == EdgeType::P2P && model.getNodeType(neighbour) == DenseCore 
-				&& model.getNodeType(neighbour) == Core && model.getNodeType(neighbour) == TransitCore)
+			if (edgeType == EdgeType::P2P && (model.getNodeType(neighbour) == DenseCore 
+				|| model.getNodeType(neighbour) == Core || model.getNodeType(neighbour) == TransitCore))
 			{
 				model.setNodeType(nodes[i], NodeType::TransitCore);
 				nodes.erase(nodes.begin() + i);
