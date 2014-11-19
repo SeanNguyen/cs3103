@@ -3,6 +3,7 @@
 #include "Model.h"
 #include <iostream>
 #include <fstream>
+#include <direct.h>
 
 using namespace std;
 
@@ -17,7 +18,7 @@ namespace cs3103 {
 	}
 
 	void Serializer::SerializeTask1(Model& model) {
-		ofstream file(".//outputs//output_task1.txt");
+		ofstream file(".//output_task1.txt");
 		file << "TASK 1" << endl;
 		file << "(These paths below are not in input order, they were sorted to increase performance)" << endl;
 		for (int i = 0; i < model.getNumberOfPath(); i++) {
@@ -34,7 +35,7 @@ namespace cs3103 {
 	}
 
 	void Serializer::SerializeTask2(Model& model, vector<int> nodes) {
-		ofstream file(".//outputs//output_task2.txt");
+		ofstream file(".//output_task2.txt");
 		file << "TASK 2" << endl;
 		file << "Top ten ASes which have biggest degree:" << endl;
 		for (int i = 0; i < nodes.size(); i++) {
@@ -44,7 +45,7 @@ namespace cs3103 {
 	}
 
 	void Serializer::SerializeTask3(Model& model) {
-		ofstream file(".//outputs//output_task3.txt");
+		ofstream file(".//output_task3.txt");
 		file << "TASK 3" << endl;
 		vector<int> nodes = model.getAllNodes();
 		for (int i = 0; i < nodes.size(); i++) {
@@ -63,7 +64,7 @@ namespace cs3103 {
 	}
 
 	void Serializer::SerializeTask4(Model& model) {
-		ofstream file(".//outputs//output_task4.txt");
+		ofstream file(".//output_task4.txt");
 		file << "TASK 4" << endl;
 		vector<int> nodes = model.getAllNodes();
 		for (int i = 0; i < nodes.size(); i++) {

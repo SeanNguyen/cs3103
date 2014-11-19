@@ -65,12 +65,3 @@ packages/
 
 #Test files
 *.testsettings
-Tests/TestFollowsFollowsStarSource1.txt
-/Static Program Analyzer/AutoTester/output.xml
-/Static Program Analyzer/enc_temp_folder
-/Static Program Analyzer/AutoTester/flatfile.txt
-/ipch
-/Debug
-/CS3103.sdf
-/CS3103.v11.suo
-/CS3103/Debug

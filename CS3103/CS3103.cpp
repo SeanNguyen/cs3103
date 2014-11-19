@@ -9,15 +9,14 @@ using namespace cs3103;
 
 void solveTask1(Model& model);
 vector<int> solveTask2(Model& model);
-void solveTask3(Model& model);
+void solveTask3(Model& model, int L, int R);
 void solveTask4(Model& model);
 
 int _tmain(int argc, _TCHAR* argv[]) {
 	Model model;
 	Serializer serializer;
 
-	cout << "PROGRAM BEGIN !!!" << endl;
-	cout << "Solving Task 1" << endl;
+	cout << "PROGRAM BEGIN !!!" << endl << "Solving Task 1" << endl;
 	solveTask1(model);
 	cout << "Saving Task 1 result" << endl;
 	serializer.SerializeTask1(model);
@@ -27,8 +26,12 @@ int _tmain(int argc, _TCHAR* argv[]) {
 	cout << "Saving Task 2 result" << endl;
 	serializer.SerializeTask2(model, task2Result);
 	
-	cout << "Solving Task 3" << endl;
-	solveTask3(model);
+	int L, R;
+	cout << "Solving Task 3" << endl << "Input L: ";
+	cin >> L;
+	cout << "Input R: ";
+	cin >> R;
+	solveTask3(model, L, R);
 	cout << "Saving Task 3 result" << endl;
 	serializer.SerializeTask3(model);
 
@@ -37,14 +40,13 @@ int _tmain(int argc, _TCHAR* argv[]) {
 	cout << "Saving Task 4 result" << endl;
 	serializer.SerializeTask4(model);
 
-	cout << "PROGRAM END !!!" << endl;
-	cin.get();
+	system("PAUSE");
 }
 
 void solveTask1(Model& model) {
 	//TASK 1================================================================================================================
 	Parser parser;
-	parser.parse(".//inputs//2001.10.26.txt", model);
+	parser.parse(".//input.txt", model);
 }
 
 vector<int> solveTask2(Model& model) {
@@ -70,7 +72,7 @@ vector<int> solveTask2(Model& model) {
 	return result;
 }
 
-void solveTask3(Model& model) {
+void solveTask3(Model& model, int L, int R) {
 	//TASK 3 - Heuristic Algorithm==========================================================================================
 	//Phase 1: Calculate degree of ASes (done in task 2)
 
@@ -99,7 +101,6 @@ void solveTask3(Model& model) {
 
 	//Phase 3: Assign relationship to AS pairs
 	//for each AS path
-	int L = 3;
 	for (int i = 0; i < numberOfPath; i++) {
 		vector<int> path = model.getPath(i);
 		for (int k = 0; k < path.size() - 1; k++) {
@@ -148,7 +149,6 @@ void solveTask3(Model& model) {
 	}
 
 	//Phase 5 (Phase 3 of "Final Algorithm"): apply peering information
-	int R = 2;
 	for (int i = 0; i < numberOfPath; i++) {
 		vector<int> path = model.getPath(i);
 		for (int k = 0; k < path.size() - 1; k++) {
