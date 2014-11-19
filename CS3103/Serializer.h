@@ -5,8 +5,11 @@ namespace cs3103 {
 
 	class Serializer
 	{
+	private:
+		string outputPrefix;
+
 	public:
-		Serializer(void);
+		Serializer(string outputPrefix);
 		~Serializer(void);
 
 		void SerializeTask1(Model& model);

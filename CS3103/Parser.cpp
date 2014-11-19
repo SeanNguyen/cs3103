@@ -35,7 +35,7 @@ namespace cs3103 {
 				}
 			}
 
-			if (isPathValid && !model.isPathExist(path)) {
+			if (path.size() > 0 && isPathValid && !model.isPathExist(path)) {
 				model.insertPath(path);
 			}
 		}

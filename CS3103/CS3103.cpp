@@ -4,51 +4,55 @@
 #include "stdafx.h"
 #include "Parser.h"
 #include "Serializer.h"
+#include <string>
 
 using namespace cs3103;
 
-void solveTask1(Model& model);
+void solveTask1(Model& model, string inputFile);
 vector<int> solveTask2(Model& model);
 void solveTask3(Model& model, int L, int R);
 void solveTask4(Model& model);
 
 int _tmain(int argc, _TCHAR* argv[]) {
-	Model model;
-	Serializer serializer;
-
 	cout << "PROGRAM BEGIN !!!" << endl;
 	int L, R;
 	cout << "Input L: ";
 	cin >> L;
 	cout << "Input R: ";
 	cin >> R;
-	cout << "Solving Task 1 (Parsing source file in this task can be really long)" << endl;
-	solveTask1(model);
-	cout << "Saving Task 1 result" << endl;
-	serializer.SerializeTask1(model);
+	for (int i = 2004; i <= 2013; i++) {
+		Model model;
+		Serializer serializer("output" + to_string(i));
+		string inputFile = ".//" + to_string(i) + ".txt";
+		cout << "YEAR:\t" << i << endl;
+		cout << "Solving Task 1 (Parsing source file in this task can be really long)" << endl;
+		solveTask1(model, inputFile);
+		cout << "Saving Task 1 result" << endl;
+		serializer.SerializeTask1(model);
 
-	cout << "Solving Task 2" << endl;
-	vector<int> task2Result = solveTask2(model);
-	cout << "Saving Task 2 result" << endl;
-	serializer.SerializeTask2(model, task2Result);
-	
-	cout << "Solving Task 3" << endl;
-	solveTask3(model, L, R);
-	cout << "Saving Task 3 result" << endl;
-	serializer.SerializeTask3(model);
+		cout << "Solving Task 2" << endl;
+		vector<int> task2Result = solveTask2(model);
+		cout << "Saving Task 2 result" << endl;
+		serializer.SerializeTask2(model, task2Result);
 
-	cout << "Solving Task 4" << endl;
-	solveTask4(model);
-	cout << "Saving Task 4 result" << endl;
-	serializer.SerializeTask4(model);
+		cout << "Solving Task 3" << endl;
+		solveTask3(model, L, R);
+		cout << "Saving Task 3 result" << endl;
+		serializer.SerializeTask3(model);
+
+		cout << "Solving Task 4" << endl;
+		solveTask4(model);
+		cout << "Saving Task 4 result" << endl;
+		serializer.SerializeTask4(model);
+	}
 
 	system("PAUSE");
 }
 
-void solveTask1(Model& model) {
+void solveTask1(Model& model, string inputFile) {
 	//TASK 1================================================================================================================
 	Parser parser;
-	parser.parse(".//input.txt", model);
+	parser.parse(inputFile, model);
 }
 
 vector<int> solveTask2(Model& model) {
@@ -56,15 +60,17 @@ vector<int> solveTask2(Model& model) {
 	//The graph and degree are generated in the parsing phase in Task 1 
 	//so now we only need to extract 10 ASes that have biggest degree
 	vector <int> nodes = model.getAllNodes();
-	vector <int> result(10, -1);
+	vector <int> result;
 	for (int i = 0; i < nodes.size(); i++) {
 		int pos = -1;
 		for (int j = result.size() - 1; j >= 0; j--) {
-			if (result[j] == -1 || model.getNodeDegree(nodes[i]) > model.getNodeDegree(result[j])) {
+			if (model.getNodeDegree(nodes[i]) > model.getNodeDegree(result[j])) {
 				pos = j;
 			}
 		}
-		if (pos != -1) {
+		if(pos == -1 && result.size() < 10) {
+				result.push_back(nodes[i]);
+		} else {
 			result.insert(result.begin() + pos, nodes[i]);
 		}
 		if (result.size() > 10) {
