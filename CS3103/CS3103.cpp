@@ -25,7 +25,6 @@ int _tmain(int argc, _TCHAR* argv[]) {
 	Model model;
 	Serializer serializer("output");
 	string inputFile = ".//input.txt";
-	cout << "YEAR:\t" << i << endl;
 	cout << "Solving Task 1 (Parsing source file in this task can be really long)" << endl;
 	solveTask1(model, inputFile);
 	serializer.SerializeTask1(model);
