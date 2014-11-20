@@ -1,5 +1,7 @@
+//A0088441B - Nguyen Trong Son
 // CS3103.cpp : Defines the entry point for the console application.
-//
+//This file is not OOP
+//This file contain the main logic for solving 4 task in elementary and intermediate part
 
 #include "stdafx.h"
 #include "Parser.h"
@@ -16,41 +18,38 @@ void solveTask4(Model& model);
 int _tmain(int argc, _TCHAR* argv[]) {
 	cout << "PROGRAM BEGIN !!!" << endl;
 	int L, R;
-	cout << "Input L: ";
+	cout << "Input L (integer): ";
 	cin >> L;
-	cout << "Input R: ";
+	cout << "Input R (integer): ";
 	cin >> R;
-	for (int i = 2004; i <= 2013; i++) {
-		Model model;
-		Serializer serializer("output" + to_string(i));
-		string inputFile = ".//" + to_string(i) + ".txt";
-		cout << "YEAR:\t" << i << endl;
-		cout << "Solving Task 1 (Parsing source file in this task can be really long)" << endl;
-		solveTask1(model, inputFile);
-		cout << "Saving Task 1 result" << endl;
-		serializer.SerializeTask1(model);
+	Model model;
+	Serializer serializer("output");
+	string inputFile = ".//input.txt";
+	cout << "YEAR:\t" << i << endl;
+	cout << "Solving Task 1 (Parsing source file in this task can be really long)" << endl;
+	solveTask1(model, inputFile);
+	serializer.SerializeTask1(model);
 
-		cout << "Solving Task 2" << endl;
-		vector<int> task2Result = solveTask2(model);
-		cout << "Saving Task 2 result" << endl;
-		serializer.SerializeTask2(model, task2Result);
+	cout << "Solving Task 2" << endl;
+	vector<int> task2Result = solveTask2(model);
+	serializer.SerializeTask2(model, task2Result);
 
-		cout << "Solving Task 3" << endl;
-		solveTask3(model, L, R);
-		cout << "Saving Task 3 result" << endl;
-		serializer.SerializeTask3(model);
+	cout << "Solving Task 3" << endl;
+	solveTask3(model, L, R);
+	serializer.SerializeTask3(model);
 
-		cout << "Solving Task 4" << endl;
-		solveTask4(model);
-		cout << "Saving Task 4 result" << endl;
-		serializer.SerializeTask4(model);
-	}
+	cout << "Solving Task 4" << endl;
+	solveTask4(model);
+	serializer.SerializeTask4(model);
 
 	system("PAUSE");
 }
 
 void solveTask1(Model& model, string inputFile) {
-	//TASK 1================================================================================================================
+	//TASK 1
+	//Simply parsing the input file by calling the parser
+	//Paths insert in a sorted order
+	//Checking for duplicating path is by binary search to increase performance
 	Parser parser;
 	parser.parse(inputFile, model);
 }
@@ -61,6 +60,7 @@ vector<int> solveTask2(Model& model) {
 	//so now we only need to extract 10 ASes that have biggest degree
 	vector <int> nodes = model.getAllNodes();
 	vector <int> result;
+	//Maintain a list of top ten ASes and check if a AS is bigger than any in this list
 	for (int i = 0; i < nodes.size(); i++) {
 		int pos = -1;
 		for (int j = result.size() - 1; j >= 0; j--) {
@@ -68,11 +68,14 @@ vector<int> solveTask2(Model& model) {
 				pos = j;
 			}
 		}
+		//if an AS not bigger than any AS in the top ten list but the top ten list have less than 10 ASes
 		if(pos == -1 && result.size() < 10) {
-				result.push_back(nodes[i]);
-		} else {
+			result.push_back(nodes[i]);
+		//if an AS can be insert in the top ten list
+		} else if (pos != -1) {
 			result.insert(result.begin() + pos, nodes[i]);
 		}
+		//remove the last element if the top ten list if longer than 10 elements
 		if (result.size() > 10) {
 			result.erase(result.begin() + 10);
 		}
@@ -81,7 +84,7 @@ vector<int> solveTask2(Model& model) {
 }
 
 void solveTask3(Model& model, int L, int R) {
-	//TASK 3 - Heuristic Algorithm==========================================================================================
+	//TASK 3 - Heuristic Algorithm, apply the "Final Algorithm" from the book
 	//Phase 1: Calculate degree of ASes (done in task 2)
 
 	//Phase 2: Parse AS path to initialize consecutive AS's pair transit relationship
@@ -138,6 +141,7 @@ void solveTask3(Model& model, int L, int R) {
 				j = k;
 			}
 		}
+
 		for (int k = 0; k < j - 1; k++) {
 			model.setNotPeering(path[k], path[k + 1], 1);
 		}
@@ -171,10 +175,11 @@ void solveTask3(Model& model, int L, int R) {
 }
 
 void solveTask4(Model& model) {
-	//TASK 4================================================================================================================
+	//TASK 4
 	vector<int> nodes = model.getAllNodes();
 
 	//remove stub ASes
+	//Stub: AS which has only c2p relations to its neighbors is leaf (Stub).
 	for (int i = 0; i < nodes.size(); i++) {
 		map<int, EdgeInfo> edges = model.getEdges(nodes[i]);
 		bool isLeaf = true;
@@ -194,6 +199,7 @@ void solveTask4(Model& model) {
 	}
 
 	//remove Regional ISPs
+	//Regional ISP: In all neighbors of this AS, the connections p2c, s2s, p2p will only lead to Stub neighbors.
 	for (int i = 0; i < nodes.size(); i++) {
 		map<int, EdgeInfo> edges = model.getEdges(nodes[i]);
 		bool isRegionalIsp = true;
@@ -217,7 +223,7 @@ void solveTask4(Model& model) {
 		model.setNodeType(nodes[i], NodeType::Core);
 	}
 
-	//remove all dense core
+	//remove all dense core (Core with no c2p edge)
 	for (int i = 0; i < nodes.size(); i++) {
 		map<int, EdgeInfo> edges = model.getEdges(nodes[i]);
 		bool isDenseCore = true;
@@ -235,7 +241,7 @@ void solveTask4(Model& model) {
 		}
 	}
 
-	//remove all Transit ASes
+	//remove all Transit ASes (Core with p2p edge to another Core is a Transit Core)
 	for (int i = 0; i < nodes.size(); i++) {
 		map<int, EdgeInfo> edges = model.getEdges(nodes[i]);
 		for (std::map<int, EdgeInfo>::iterator it = edges.begin(); it != edges.end(); ++it)	{

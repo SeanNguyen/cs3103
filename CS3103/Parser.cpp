@@ -1,3 +1,4 @@
+//A0088441B - Nguyen Trong Son
 #include "stdafx.h"
 #include "Parser.h"
 #include <fstream>
@@ -15,8 +16,15 @@ namespace cs3103 {
 
 	void Parser::parse(string fileName, Model &model) {
 		ifstream infile(fileName);
+		string data;
+		infile.seekg(0, std::ios::end);   
+		data.reserve(infile.tellg());
+		infile.seekg(0, std::ios::beg);
+		data.assign((std::istreambuf_iterator<char>(infile)), std::istreambuf_iterator<char>());
+
+		istringstream lines(data);
 		string line;
-		while (getline(infile, line)) {
+		while (getline(lines, line)) {
 			istringstream iss(line);
 			string word;
 			vector<int> path;

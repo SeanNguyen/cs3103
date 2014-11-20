@@ -1,3 +1,4 @@
+//A0088441B - Nguyen Trong Son
 #include "stdafx.h"
 #include "Model.h"
 #include <math.h>
@@ -21,7 +22,7 @@ namespace cs3103 {
 			nodes[path[i + 1]].neighbours[(path[i])];
 		}
 
-		//inster path in a sorted order
+		////inster path in a sorted order
 		int insertIndex = binarySearchInsertPoistion(path, paths);
 		paths.insert(paths.begin() + insertIndex, path);
 	}
@@ -93,6 +94,22 @@ namespace cs3103 {
 			throw;
 		}
 		return nodes[node].type;
+	}
+
+	int Model::getNumberOfEdge() {
+		int count = 0;
+		for (std::map<int, NodeInfo>::iterator it = nodes.begin(); it != nodes.end(); ++it) {
+			count += it->second.neighbours.size();
+		}
+		return count / 2;
+	}
+
+	double Model::getAveragePathLength() {
+		int total = 0;
+		for (int i = 0; i < paths.size(); i++) {
+			total += paths[i].size();
+		}
+		return (double)total / paths.size();
 	}
 
 	bool Model::setTransit(int node1, int node2, int value) {

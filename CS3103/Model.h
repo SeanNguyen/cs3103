@@ -1,3 +1,7 @@
+//A0088441B - Nguyen Trong Son
+//Model stores information about Paths, ASes, Edges, and performs all basic operations on this data, 
+//for example insert a path, get an AS, set an edge type.
+//Model is accessed and used by all other components
 #pragma once
 #include <vector>
 #include <map>
@@ -46,6 +50,8 @@ namespace cs3103 {
 		int getNotPeering(int node1, int node2);
 		EdgeType getEdgeType(int node1, int node2);
 		NodeType getNodeType(int node);
+		int getNumberOfEdge();
+		double getAveragePathLength();
 
 		bool setTransit(int node1, int node2, int value);
 		bool setEdgeType(int node1, int node2, EdgeType edgeType);

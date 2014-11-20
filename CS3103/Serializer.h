@@ -1,3 +1,5 @@
+//A0088441B - Nguyen Trong Son
+//Serializer write output result to files
 #pragma once
 #include "Model.h"
 
@@ -16,6 +18,7 @@ namespace cs3103 {
 		void SerializeTask2(Model& model, vector<int> nodes);
 		void SerializeTask3(Model& model);
 		void SerializeTask4(Model& model);
+		void SerializeOther(Model& model);
 	};
 
 }

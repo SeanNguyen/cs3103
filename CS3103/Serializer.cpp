@@ -1,3 +1,4 @@
+//A0088441B - Nguyen Trong Son
 #include "stdafx.h"
 #include "Serializer.h"
 #include "Model.h"
@@ -82,5 +83,12 @@ namespace cs3103 {
 			}
 			file << nodes[i] << " " << nodeType.c_str() << endl;
 		}
+	}
+
+	void Serializer::SerializeOther(Model& model) {
+		ofstream file(outputPrefix + "_other.txt");
+		file << "Other information" << endl;
+		file << "Number of Edges: " << model.getNumberOfEdge() << endl;
+		file << "Average Path Length: " << model.getAveragePathLength() << endl;
 	}
 }
